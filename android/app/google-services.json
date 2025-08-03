@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "75059330893",
+    "project_id": "trail-tales-84511",
+    "storage_bucket": "trail-tales-84511.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:75059330893:android:44ff054d4e1347b7be0104",
+        "android_client_info": {
+          "package_name": "com.example.trail_tales"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOQldy6rxVrhF-a50MBHNuZe56P0YTTx0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
