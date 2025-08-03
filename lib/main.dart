@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:trail_tales/pages/OnBoardingScreen.dart';
 import 'pages/get_started_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,15 +15,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Trail Tales',
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        textTheme: GoogleFonts.openSansTextTheme(),
-        useMaterial3: true,
-      ),
-      home: const GetStartedPage(),
+      home: OnBoardingScreen(),
     );
   }
 }
