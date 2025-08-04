@@ -1,10 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:trail_tales/constants.dart';
-import 'package:trail_tales/pages/get_started_page.dart';
+import 'package:trail_tales/pages/home.dart';
 import 'package:trail_tales/pages/signup.dart';
+import 'package:trail_tales/pages/forgot_password.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class loginScreen extends StatelessWidget {
-  const loginScreen({super.key});
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LogInState();
+}
+
+class _LogInState extends State<LoginScreen> {
+
+String email = "", password = "";
+
+TextEditingController emailController = new TextEditingController();
+TextEditingController passwordController= new TextEditingController();
+
+final _formkey = GlobalKey<FormState>();
+
+userLogin() async {
+  try {
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+
+    if (!mounted) return;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Home()),
+    );
+  } on FirebaseAuthException catch (e) {
+    String message = "Something went wrong";
+
+    if (e.code == 'user-not-found') {
+      message = "No user found for that email";
+    } else if (e.code == 'wrong-password') {
+      message = "Wrong password provided";
+    }
+
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.orangeAccent,
+        content: Text(message, style: body),
+      ),
+    );
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -25,69 +71,56 @@ class loginScreen extends StatelessWidget {
           // Foreground content
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 30),
-            child: Column(
-              children: [
-                SizedBox(height: 70),
-                Transform.rotate(
-                    angle: -0.5, // in **radians** (negative = rotate left, positive = right)
-                    child: Image.asset(
-                      'assets/logo.png',
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                Text(
-                  "Trail Tales",
-                  style: h1.copyWith(
-                    shadows: [
-                      Shadow(
-                        color: Colors.black.withAlpha((0.5 * 255).round()), // shadow color
-                        offset: Offset(2, 2),                 // x and y offset
-                        blurRadius: 4,                        // blur radius
+            child: Form(
+              key: _formkey,
+              child: Column(
+                children: [
+                  SizedBox(height: 70),
+                  Transform.rotate(
+                      angle: -0.5, // in **radians** (negative = rotate left, positive = right)
+                      child: Image.asset(
+                        'assets/logo.png',
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.contain,
                       ),
-                    ],
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 10, left: 5, right: 30),
-                    child: Text(
-                      "Login to your Account",
-                      style: body,
+                    ),
+                    SizedBox(height: 20),
+                  Text(
+                    "Trail Tales",
+                    style: h1.copyWith(
+                      shadows: [
+                        Shadow(
+                          color: Colors.black.withAlpha((0.5 * 255).round()), // shadow color
+                          offset: Offset(2, 2),                 // x and y offset
+                          blurRadius: 4,                        // blur radius
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                SizedBox(height: 20,),
-                customTextField(hint: "Email",),
-                SizedBox(height: 20,),
-                customTextField(hint: "Password",),
-                SizedBox(height: 15,),
-                Align(alignment: Alignment.centerRight, child: Text("Frogot your password?", style: body2.copyWith(fontSize: 18, color: const Color.fromARGB(255, 255, 255, 255), fontWeight: FontWeight.bold,
-                decoration: TextDecoration.underline,
-                decorationColor: Colors.white,))),
-
-                SizedBox(height: 25,),
-
-                SizedBox(height:  60, width: 270, child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: btngray),
-                    onPressed: () {
-                      Navigator.push(context, 
-                      MaterialPageRoute(
-                        builder: (context) => const GetStartedPage()),);
-                    }, child: Text("Signin", style: body.copyWith(fontSize: 22, letterSpacing: 10),))),
-                    SizedBox(height: 15,),
-                    InkWell(
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 10, left: 5, right: 30),
+                      child: Text(
+                        "Login to your Account",
+                        style: body,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20,),
+                  customTextField(hint: "Email", controller: emailController,),
+                  SizedBox(height: 20,),
+                  customTextField(hint: "Password", controller: passwordController, isPassword: true,),
+                  SizedBox(height: 15,),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const signUpScreen()),
-                        );
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPassword()));
                       },
                       child: Text(
-                        "Create new account",
+                        "Forgot your password?",
                         style: body2.copyWith(
                           fontSize: 18,
                           color: const Color.fromARGB(255, 255, 255, 255),
@@ -97,18 +130,55 @@ class loginScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                  ),
+              
+                  SizedBox(height: 25,),
+              
+                  SizedBox(height:  60, width: 270, child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(backgroundColor: btngray),
+                      onPressed: () {
+                        if (_formkey.currentState!.validate()) {
+                          setState(() {
+                            email = emailController.text.trim();
+                            password = passwordController.text;
+                          });
 
-
-                    SizedBox(height: 40,),
-                    Text("Or continue with", 
-                    style: body2.copyWith(fontSize: 18, color: const Color.fromARGB(255, 255, 255, 255), fontWeight: FontWeight.bold,)),
-                    SizedBox(height: 15,),
-                    Row(mainAxisAlignment: MainAxisAlignment.center ,children: [
-                      socialButton(iconPath: "assets/google.png",),
-                      SizedBox(width: 10,),
-                      socialButton(iconPath: "assets/apple.png",)
-                    ],)
-              ],
+                          userLogin(); // ✅ call it only after validation + state update
+                        }
+                      },
+                      child: Text("Signin", style: body.copyWith(fontSize: 22, letterSpacing: 10),))),
+                      SizedBox(height: 15,),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const SignUpScreen()),
+                          );
+                        },
+                        child: Text(
+                          "Create new account",
+                          style: body2.copyWith(
+                            fontSize: 18,
+                            color: const Color.fromARGB(255, 255, 255, 255),
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline,
+                            decorationColor: Colors.white,
+                          ),
+                        ),
+                      ),
+              
+              
+                      SizedBox(height: 40,),
+                      Text("Or continue with", 
+                      style: body2.copyWith(fontSize: 18, color: const Color.fromARGB(255, 255, 255, 255), fontWeight: FontWeight.bold,)),
+                      SizedBox(height: 15,),
+                      Row(mainAxisAlignment: MainAxisAlignment.center ,children: [
+                        socialButton(iconPath: "assets/google.png",),
+                        SizedBox(width: 10,),
+                        socialButton(iconPath: "assets/apple.png",)
+                      ],)
+                ],
+              ),
             ),
           )
         ],
@@ -136,20 +206,37 @@ class socialButton extends StatelessWidget {
 
 class customTextField extends StatelessWidget {
   const customTextField({
-    super.key, required this.hint
+    super.key, 
+    required this.hint,
+    required this.controller,
+    this.isPassword = false,
   });
 
   final String hint;
+  final TextEditingController controller;
+  final bool isPassword;
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      obscureText: isPassword,
+      validator: (value) {
+        if(value==null||value.isEmpty){
+          return "Please enter ${hint.toLowerCase()}";
+        }
+        return null;
+      },
+      controller: controller,
       decoration: InputDecoration(
         fillColor: white, 
         filled: true,
         contentPadding: EdgeInsets.fromLTRB(30, 18, 5, 4),
         hintText: hint,
         hintStyle: body2,
+        errorStyle: TextStyle(
+          color: const Color.fromARGB(255, 255, 91, 91),
+          fontWeight: FontWeight.bold,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30), borderSide: BorderSide.none)
       ),

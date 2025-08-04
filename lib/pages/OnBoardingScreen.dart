@@ -45,7 +45,7 @@ class OnBoardingScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(context, 
                       MaterialPageRoute(
-                        builder: (context) => const loginScreen()),);
+                        builder: (context) => const LoginScreen()),);
                     }, child: Text("Get Started", style: body,)))
                 ],
               ),
