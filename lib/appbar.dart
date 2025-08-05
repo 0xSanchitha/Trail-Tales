@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:trail_tales/constants.dart';
+import 'package:trail_tales/pages/profile.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -13,7 +14,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
-      automaticallyImplyLeading: false,
+      automaticallyImplyLeading: title == "P R O F I L E",
       title: Padding(
         padding: const EdgeInsets.only(left: 8),
         child: Text(
@@ -43,7 +44,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               shape: BoxShape.circle
             ),
             child: IconButton(onPressed: () {
-              //do something
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const Profile()),);
             }, icon: Icon(Iconsax.user, color: Colors.white,)),
           ),
         ),
