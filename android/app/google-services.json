@@ -12,7 +12,20 @@
           "package_name": "com.example.trail_tales"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "75059330893-6dpouvsuv6q04g7d6eb4b6k2afruvvs7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.trail_tales",
+            "certificate_hash": "9d8c1be0239d67d1cf4f49920db752e1c55a46ec"
+          }
+        },
+        {
+          "client_id": "75059330893-v96qbo6o7f7r04aj5ti0hge120m5iltl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCOQldy6rxVrhF-a50MBHNuZe56P0YTTx0"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "75059330893-v96qbo6o7f7r04aj5ti0hge120m5iltl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "75059330893-corl4mb76muuqp40sotlf9lffkgequ2i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.trailTales"
+              }
+            }
+          ]
         }
       }
     }

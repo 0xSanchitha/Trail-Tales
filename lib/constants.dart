@@ -6,6 +6,7 @@ const bg = Color.fromARGB(255, 2, 131, 118);
 const btngray = Color.fromARGB(255, 26, 29, 41);
 const white = Colors.white;
 const black = Colors.black;
+const bggray = Color(0xEFEFEF);
 
 //font sizes
 

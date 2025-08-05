@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:trail_tales/constants.dart';
+import 'package:trail_tales/navigation_menu.dart';
 import 'package:trail_tales/pages/home.dart';
 import 'package:trail_tales/pages/signup.dart';
 import 'package:trail_tales/pages/forgot_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:trail_tales/service/auth.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -30,7 +32,7 @@ userLogin() async {
     if (!mounted) return;
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => Home()),
+      MaterialPageRoute(builder: (context) => NavigationMenu()),
     );
   } on FirebaseAuthException catch (e) {
     String message = "Something went wrong";
@@ -173,7 +175,11 @@ userLogin() async {
                       style: body2.copyWith(fontSize: 18, color: const Color.fromARGB(255, 255, 255, 255), fontWeight: FontWeight.bold,)),
                       SizedBox(height: 15,),
                       Row(mainAxisAlignment: MainAxisAlignment.center ,children: [
-                        socialButton(iconPath: "assets/google.png",),
+                        GestureDetector(
+                          onTap: () {
+                            AuthMethods().signInWithGoogle(context);
+                          },
+                          child: socialButton(iconPath: "assets/google.png",)),
                         SizedBox(width: 10,),
                         socialButton(iconPath: "assets/apple.png",)
                       ],)

@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:trail_tales/constants.dart';
+import 'package:trail_tales/navigation_menu.dart';
 import 'package:trail_tales/pages/home.dart';
 import 'package:trail_tales/pages/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:trail_tales/service/auth.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -39,7 +41,7 @@ registration() async {
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Home()),
+        MaterialPageRoute(builder: (context) => NavigationMenu()),
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -220,7 +222,11 @@ registration() async {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SocialButton(iconPath: "assets/google.png"),
+                          GestureDetector(
+                          onTap: () {
+                            AuthMethods().signInWithGoogle(context);
+                          },
+                          child: SocialButton(iconPath: "assets/google.png")),
                           SizedBox(width: 10),
                           SocialButton(iconPath: "assets/apple.png"),
                         ],
