@@ -78,7 +78,7 @@ class _LocationState extends State<Location> {
                       height: 340,
                       viewportFraction: 1.0,
                       enableInfiniteScroll: false,
-                      autoPlay: false,
+                      autoPlay: true,
                       onPageChanged: (index, reason) {
                         setState(() {
                           _currentImage = index;
@@ -187,7 +187,7 @@ class _LocationState extends State<Location> {
                   Text(widget.details,
                   style: text,),
         
-                  SizedBox(height: 50,),
+                  SizedBox(height: 30,),
                   ElevatedButton(onPressed: () {}, 
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primary,

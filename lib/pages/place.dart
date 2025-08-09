@@ -61,15 +61,15 @@ class _LocationState extends State<Location> {
               children: [
                 ClipRRect(
                   borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(25),
-                    bottomRight: Radius.circular(25),
+                    bottomLeft: Radius.circular(50),
+                    bottomRight: Radius.circular(50),
                   ),
                   child: CarouselSlider(
                     options: CarouselOptions(
                       height: 340,
                       viewportFraction: 1.0,
                       enableInfiniteScroll: false,
-                      autoPlay: false,
+                      autoPlay: true,
                       onPageChanged: (index, reason) {
                         setState(() {
                           _currentImage = index;
@@ -175,7 +175,7 @@ class _LocationState extends State<Location> {
 
                   Text(widget.details, style: text),
 
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 30),
 
                   ElevatedButton(
                     onPressed: () {},
