@@ -16,10 +16,18 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  int _currentSlide = 0;
+  late Future<List<Place>> _placesFuture; // store future
+
+  @override
+  void initState() {
+    super.initState();
+    final firestoreService = FirestoreService();
+    _placesFuture = firestoreService.fetchPlaces(); // fetch once
+  }
 
   @override
   Widget build(BuildContext context) {
-    final firestoreService = FirestoreService();
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 239, 239, 239),
       appBar: const CustomAppBar(title: "D I S C O V E R"),
@@ -45,9 +53,9 @@ class _HomeState extends State<Home> {
             ),
             const SizedBox(height: 10),
 
-            // 🔽 FETCH & DISPLAY PLACES
+            // ✅ This Future is now stored, not recreated every build
             FutureBuilder<List<Place>>(
-              future: firestoreService.fetchPlaces(),
+              future: _placesFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -61,38 +69,65 @@ class _HomeState extends State<Home> {
                   return const Center(child: Text("No places found."));
                 }
 
-                return CarouselSlider(
-                  options: CarouselOptions(
-                    height: 230,
-                    viewportFraction: 1.0,
-                    enlargeCenterPage: true,
-                    autoPlay: true,
-                    initialPage: 0,
-                    pageSnapping: true,
-                    enableInfiniteScroll: true,
-                    // preloading previous/next images
-                    enlargeStrategy: CenterPageEnlargeStrategy.scale,
-                    scrollPhysics: BouncingScrollPhysics(),
-                  ),
-                  items: places.map((place) {
-                    return SliderItems(
-                      imageUrl: place.image,
-                      title: place.title,
-                      description: place.description,
-                      onReadMore: () {},
-                    );
-                  }).toList(),
-                );
+                return Column(
+                  children: [
+                    CarouselSlider(
+                      options: CarouselOptions(
+                        height: 230,
+                        viewportFraction: 1.0,
+                        enlargeCenterPage: true,
+                        autoPlay: true,
+                        initialPage: 0,
+                        enableInfiniteScroll: true,
+                        enlargeStrategy: CenterPageEnlargeStrategy.scale,
+                        scrollPhysics: const BouncingScrollPhysics(),
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            _currentSlide = index;
+                          });
+                        },
+                      ),
+                      items: places.map((place) {
+                        return SliderItems(
+                          key: ValueKey(place.title), // 🔑 unique key
+                          imageUrl: place.image,
+                          title: place.title,
+                          description: place.description,
+                          onReadMore: () {},
+                        );
+                      }).toList(),
+                    ),
 
+                    const SizedBox(height: 10),
+
+                    // 🔽 Rounded bar indicators
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(places.length, (index) {
+                        bool isActive = index == _currentSlide;
+                        return AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
+                          height: 8,
+                          width: isActive ? 20 : 8,
+                          decoration: BoxDecoration(
+                            color: isActive ? primary : Colors.grey[400],
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        );
+                      }),
+                    ),
+                  ],
+                );
               },
             ),
           ],
         ),
       ),
-
-      );
+    );
   }
 }
+
 
 class SliderItems extends StatelessWidget {
   final String imageUrl;
