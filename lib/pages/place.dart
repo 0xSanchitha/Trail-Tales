@@ -1,22 +1,23 @@
+// lib/pages/location.dart
+
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:trail_tales/constants.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class Location extends StatefulWidget {
   final List<String> images;
   final String title;
   final String details;
-  final String location;
+  final String location; // you can pass empty string if not used
 
   const Location({
-    super.key, 
+    super.key,
     required this.images,
     required this.title,
     required this.details,
-    required this.location});
+    required this.location,
+  });
 
   @override
   State<Location> createState() => _LocationState();
@@ -27,34 +28,26 @@ class _LocationState extends State<Location> {
   bool _isLiked = false;
 
   Icon getHeartIcon() {
-    if (_isLiked) {
-      return const Icon(Icons.favorite, color: Colors.red,);
-    } else {
-      return const Icon(Icons.favorite_border, color: Colors.white);
-    }
+    return _isLiked
+        ? const Icon(Icons.favorite, color: Colors.red)
+        : const Icon(Icons.favorite_border, color: Colors.white);
   }
 
   List<Widget> buildIndicators() {
-    List<Widget> indicators = [];
-    for (int i = 0; i < widget.images.length; i++) {
-      bool isActive = i == _currentImage;
-      indicators.add(
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          margin: const EdgeInsets.symmetric(horizontal: 4),
-          height: 8,
-          width: isActive ? 20 : 8,
-          decoration: BoxDecoration(
-            color: isActive ? primary : Colors.grey[400],
-            borderRadius: BorderRadius.circular(20),
-          ),
+    return List.generate(widget.images.length, (i) {
+      final isActive = i == _currentImage;
+      return AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        margin: const EdgeInsets.symmetric(horizontal: 4),
+        height: 8,
+        width: isActive ? 20 : 8,
+        decoration: BoxDecoration(
+          color: isActive ? primary : Colors.grey[400],
+          borderRadius: BorderRadius.circular(20),
         ),
       );
-    }
-    return indicators;
+    });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +57,8 @@ class _LocationState extends State<Location> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Stack for slider + buttons
             Stack(
               children: [
-                // Slider with rounded bottom corners
                 ClipRRect(
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(25),
@@ -98,7 +89,6 @@ class _LocationState extends State<Location> {
                     }).toList(),
                   ),
                 ),
-        
                 Positioned(
                   top: 30,
                   left: 16,
@@ -110,7 +100,6 @@ class _LocationState extends State<Location> {
                     ),
                   ),
                 ),
-        
                 Positioned(
                   top: 30,
                   right: 16,
@@ -128,16 +117,16 @@ class _LocationState extends State<Location> {
                 ),
               ],
             ),
-        
+
             const SizedBox(height: 15),
-        
-            // Indicator dots
+
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: buildIndicators()
+              children: buildIndicators(),
             ),
-        
+
             const SizedBox(height: 20),
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
@@ -152,97 +141,99 @@ class _LocationState extends State<Location> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    widget.location,
-                    style: text.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                  if (widget.location.isNotEmpty)
+                    Text(
+                      widget.location,
+                      style: text.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
                     ),
-                  ),
                   const SizedBox(height: 30),
-        
-                  // Row with extra side margin
+
+                  // Example info cards (customize or remove if not needed)
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // Distance
-                        buildInfoCard("Distance", "13km"),
-                        // Temp
-                        buildInfoCard(
-                          "Temp", "20°C",
-                        ),
-                        // Rate
+                        buildInfoCard("Distance", "13KM"),
+                        buildInfoCard("Temp", "20°C"),
                         buildInfoCard("Rate", "4.4"),
                       ],
                     ),
                   ),
-                  SizedBox(height: 30,),
-                  Text("A b o u t   t h i s   p l a c e",
-                  style: h1.copyWith(fontSize: 14, 
-                        color: Colors.black),),
-                  
-                  SizedBox(height: 15,),
-                  Text(widget.details,
-                  style: text,),
-        
-                  SizedBox(height: 50,),
-                  ElevatedButton(onPressed: () {}, 
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: primary,
-                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-                    shape:  RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)
-                    )
-                  )
-                  ,child: Text("D i r e c t i o n", style: h1.copyWith(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,))
-                  )
+
+                  const SizedBox(height: 30),
+
+                  Text(
+                    "A b o u t   t h i s   p l a c e",
+                    style: h1.copyWith(fontSize: 14, color: Colors.black),
+                  ),
+
+                  const SizedBox(height: 15),
+
+                  Text(widget.details, style: text),
+
+                  const SizedBox(height: 50),
+
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primary,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 12),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                    ),
+                    child: Text(
+                      "D i r e c t i o n",
+                      style: h1.copyWith(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
-        
           ],
         ),
       ),
-
     );
   }
-    Widget buildInfoCard(String label, String value) {
-      return Container(
-        height: 90,
-        width: 90,
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 241, 241, 241),
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.3),
-              blurRadius: 6,
-              offset: const Offset(2, 2),
+
+  Widget buildInfoCard(String label, String value) {
+    return Container(
+      height: 90,
+      width: 90,
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 241, 241, 241),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 6,
+            offset: const Offset(2, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(label, style: text.copyWith(fontSize: 14)),
+          const SizedBox(height: 4),
+          Text(
+            value,
+            style: h1.copyWith(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.teal,
             ),
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(label, style: text.copyWith(fontSize: 14)),
-            const SizedBox(height: 4),
-            Text(
-              value,
-              style: h1.copyWith(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.teal,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
+          ),
+        ],
+      ),
+    );
   }
-
-
+}
