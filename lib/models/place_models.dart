@@ -3,12 +3,17 @@ class Place {
   final String description;
   final String image;
   final List<String> images;
+  final String details;
+  final String location;
+
 
   Place({
     required this.title,
     required this.description,
     required this.image,
     required this.images,
+    required this.details,
+    required this.location,
   });
 
   factory Place.fromMap(Map<String, dynamic> data) {
@@ -42,7 +47,9 @@ class Place {
     return Place(
       title: data['title'] ?? '',
       description: data['description'] ?? '',
+      details: data['details'] ?? '',
       image: data['image'] ?? '',
+      location: data['location'] ?? '',
       images: imageList,
     );
   }

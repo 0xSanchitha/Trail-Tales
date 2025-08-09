@@ -5,8 +5,16 @@ import 'package:trail_tales/constants.dart';
 
 class Location extends StatefulWidget {
   final List<String> images;
+  final String title;
+  final String details;
+  final String location;
 
-  const Location({super.key, required this.images});
+  const Location({
+    super.key, 
+    required this.images,
+    required this.title,
+    required this.details,
+    required this.location});
 
   @override
   State<Location> createState() => _LocationState();
@@ -48,87 +56,188 @@ class _LocationState extends State<Location> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 239, 239, 239),
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Stack for slider + buttons
-          Stack(
-            children: [
-              // Slider with rounded bottom corners
-              ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(25),
-                  bottomRight: Radius.circular(25),
-                ),
-                child: CarouselSlider(
-                  options: CarouselOptions(
-                    height: 340,
-                    viewportFraction: 1.0,
-                    enableInfiniteScroll: false,
-                    autoPlay: false,
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        _currentImage = index;
-                      });
-                    },
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Stack for slider + buttons
+            Stack(
+              children: [
+                // Slider with rounded bottom corners
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(25),
+                    bottomRight: Radius.circular(25),
                   ),
-                  items: widget.images.map((imgUrl) {
-                    return CachedNetworkImage(
-                      imageUrl: imgUrl,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      placeholder: (context, url) =>
-                          const Center(child: CircularProgressIndicator()),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                    );
-                  }).toList(),
-                ),
-              ),
-
-              Positioned(
-                top: 30,
-                left: 16,
-                child: CircleAvatar(
-                  backgroundColor: Colors.black54,
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () => Navigator.pop(context),
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                      height: 340,
+                      viewportFraction: 1.0,
+                      enableInfiniteScroll: false,
+                      autoPlay: false,
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          _currentImage = index;
+                        });
+                      },
+                    ),
+                    items: widget.images.map((imgUrl) {
+                      return CachedNetworkImage(
+                        imageUrl: imgUrl,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        placeholder: (context, url) =>
+                            const Center(child: CircularProgressIndicator()),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      );
+                    }).toList(),
                   ),
                 ),
-              ),
-
-              Positioned(
-                top: 30,
-                right: 16,
-                child: CircleAvatar(
-                  backgroundColor: Colors.black54,
-                  child: IconButton(
-                    icon: getHeartIcon(),
-                    onPressed: () {
-                      setState(() {
-                        _isLiked = !_isLiked;
-                      });
-                    },
+        
+                Positioned(
+                  top: 30,
+                  left: 16,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.black54,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () => Navigator.pop(context),
+                    ),
                   ),
                 ),
+        
+                Positioned(
+                  top: 30,
+                  right: 16,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.black54,
+                    child: IconButton(
+                      icon: getHeartIcon(),
+                      onPressed: () {
+                        setState(() {
+                          _isLiked = !_isLiked;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+        
+            const SizedBox(height: 15),
+        
+            // Indicator dots
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: buildIndicators()
+            ),
+        
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.title,
+                    style: h1.copyWith(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    widget.location,
+                    style: text.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+        
+                  // Row with extra side margin
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Distance
+                        buildInfoCard("Distance", "13KM"),
+                        // Temp
+                        buildInfoCard("Temp", "20°C"),
+                        // Rate
+                        buildInfoCard("Rate", "4.4"),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 30,),
+                  Text("A b o u t   t h i s   p l a c e",
+                  style: h1.copyWith(fontSize: 14, 
+                        color: Colors.black),),
+                  
+                  SizedBox(height: 15,),
+                  Text(widget.details,
+                  style: text,),
+        
+                  SizedBox(height: 50,),
+                  ElevatedButton(onPressed: () {}, 
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primary,
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                    shape:  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)
+                    )
+                  )
+                  ,child: Text("D i r e c t i o n", style: h1.copyWith(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,))
+                  )
+                ],
               ),
-            ],
-          ),
-
-          const SizedBox(height: 15),
-
-          // Indicator dots
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: buildIndicators()
-          ),
-
-          const SizedBox(height: 20),
-        ],
+            ),
+        
+          ],
+        ),
       ),
 
     );
   }
-}
+    Widget buildInfoCard(String label, String value) {
+      return Container(
+        height: 90,
+        width: 90,
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 241, 241, 241),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3),
+              blurRadius: 6,
+              offset: const Offset(2, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(label, style: text.copyWith(fontSize: 14)),
+            const SizedBox(height: 4),
+            Text(
+              value,
+              style: h1.copyWith(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.teal,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+

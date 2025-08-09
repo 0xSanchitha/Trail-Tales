@@ -94,7 +94,10 @@ class _HomeState extends State<Home> {
                           title: place.title,
                           description: place.description,
                           onReadMore: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => Location(images: place.images)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Location(images: place.images,
+                            title: place.title,
+                            details: place.details,
+                            location: place.location,)));
                           },
                         );
                       }).toList(),
