@@ -34,3 +34,9 @@ final body2 = GoogleFonts.afacad(
   fontWeight: FontWeight.w400,
   letterSpacing: 0.5
 );
+
+final text = GoogleFonts.afacad(
+  fontSize: 16.0,
+  color: black,
+  fontWeight: FontWeight.w500
+);
