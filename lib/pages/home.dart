@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:trail_tales/appbar.dart';
 import 'package:trail_tales/constants.dart';
 import 'package:trail_tales/models/place_models.dart';
+import 'package:trail_tales/pages/location.dart';
 import 'package:trail_tales/searchbar.dart';
 import 'package:trail_tales/service/firestore_service.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -17,13 +18,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _currentSlide = 0;
-  late Future<List<Place>> _placesFuture; // store future
+  late Future<List<Place>> _placesFuture;
 
   @override
   void initState() {
     super.initState();
     final firestoreService = FirestoreService();
-    _placesFuture = firestoreService.fetchPlaces(); // fetch once
+    _placesFuture = firestoreService.fetchPlaces();
   }
 
   @override
@@ -53,7 +54,6 @@ class _HomeState extends State<Home> {
             ),
             const SizedBox(height: 10),
 
-            // ✅ This Future is now stored, not recreated every build
             FutureBuilder<List<Place>>(
               future: _placesFuture,
               builder: (context, snapshot) {
@@ -93,7 +93,9 @@ class _HomeState extends State<Home> {
                           imageUrl: place.image,
                           title: place.title,
                           description: place.description,
-                          onReadMore: () {},
+                          onReadMore: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Location(images: place.images)));
+                          },
                         );
                       }).toList(),
                     ),
@@ -117,6 +119,10 @@ class _HomeState extends State<Home> {
                         );
                       }),
                     ),
+                    const SizedBox(height: 20,),
+
+                    Text("D i s c o v e r   E v e r y w h e r e",style: h1.copyWith(fontSize: 14, 
+                      color: Colors.black),)
                   ],
                 );
               },
@@ -135,7 +141,7 @@ class SliderItems extends StatelessWidget {
   final String description;
   final VoidCallback onReadMore;
 
-  const SliderItems({
+  SliderItems({
     super.key,
     required this.imageUrl,
     required this.title,
