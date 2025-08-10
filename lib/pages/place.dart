@@ -9,7 +9,7 @@ class Location extends StatefulWidget {
   final List<String> images;
   final String title;
   final String details;
-  final String location; // you can pass empty string if not used
+  final String location;
 
   const Location({
     super.key,

@@ -8,7 +8,7 @@ class FirestoreService {
   final _mostPopularCollection = FirebaseFirestore.instance.collection('Most popular places');
   final _placesCollection = FirebaseFirestore.instance.collection('Places');
   final _hotelsCollection = FirebaseFirestore.instance.collection('Hotels');
-  final _bicyclesCollection = FirebaseFirestore.instance.collection('Bicycle');
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<List<Place>> fetchMostPopularPlaces() async {
     final snapshot = await _mostPopularCollection.get();
@@ -22,16 +22,14 @@ class FirestoreService {
 
   Future<List<HotelModel>> fetchHotels() async {
     final snapshot = await _hotelsCollection.get();
-    return snapshot.docs
-    .map((doc) => HotelModel.fromMap(doc.data()))
-    .toList();
+    return snapshot.docs.map((doc) => HotelModel.fromMap(doc.data())).toList();
   }
 
-  Future<List<VehicleModel>> fetchVehicles() async {
-    final snapshot = await _bicyclesCollection.get();
+  Future<List<VehicleModel>> fetchVehicles(String collectionName) async {
+    final snapshot = await _firestore.collection(collectionName).get();
     return snapshot.docs
-    .map((doc) => VehicleModel.fromMap(doc.data()))
-    .toList();
+        .map((doc) => VehicleModel.fromMap(doc.data()))
+        .toList();
   }
 }
 

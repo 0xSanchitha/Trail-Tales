@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trail_tales/appbar.dart';
 import 'package:trail_tales/constants.dart';
+import 'package:trail_tales/pages/bookings.dart';
 import 'package:trail_tales/searchbar.dart';
 import 'package:trail_tales/service/firestore_service.dart';
 import 'package:trail_tales/models/hotel_model.dart';
@@ -67,7 +68,6 @@ class _HotelState extends State<Hotel> {
               ),
               const SizedBox(height: 20),
 
-              // Here we load the hotels dynamically
               FutureBuilder<List<HotelModel>>(
                 future: _hotelsFuture,
                 builder: (context, snapshot) {
@@ -107,96 +107,124 @@ class _HotelCardState extends State<HotelCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 24),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 8)],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            child: widget.hotel.imageUrl.isNotEmpty
-                ? CachedNetworkImage(
-                    imageUrl: widget.hotel.imageUrl,
-                    height: 180,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(
+    return GestureDetector(
+      onTap: () {
+        final List<String> imagesList = [
+          if (widget.hotel.image.isNotEmpty) widget.hotel.image,
+          if (widget.hotel.image2 != null && widget.hotel.image2!.isNotEmpty) widget.hotel.image2!,
+          if (widget.hotel.image3 != null && widget.hotel.image3!.isNotEmpty) widget.hotel.image3!,
+        ];
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Bookings(
+              images: imagesList,
+              title: widget.hotel.title,
+              location: widget.hotel.location,
+              bedrooms: widget.hotel.bedrooms,
+              price: widget.hotel.price,
+              rating: widget.hotel.rating,
+              reviews: widget.hotel.reviews,
+              details: widget.hotel.details,
+              info: widget.hotel.info,
+              name: widget.hotel.name,
+            ),
+          ),
+        );
+      },
+
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 24),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 8)],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              child: widget.hotel.image.isNotEmpty
+                  ? CachedNetworkImage(
+                      imageUrl: widget.hotel.image,
                       height: 180,
-                      color: Colors.grey[300],
-                      child: const Center(
-                        child: CircularProgressIndicator(),
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Container(
+                        height: 180,
+                        color: Colors.grey[300],
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
                       ),
-                    ),
-                    errorWidget: (context, url, error) => Image.asset(
+                      errorWidget: (context, url, error) => Image.asset(
+                        'assets/placeholder.png',
+                        height: 180,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : Image.asset(
                       'assets/placeholder.png',
                       height: 180,
                       width: double.infinity,
                       fit: BoxFit.cover,
                     ),
-                  )
-                : Image.asset(
-                    'assets/placeholder.png',
-                    height: 180,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(widget.hotel.title, style: body.copyWith(color: Colors.black)),
-                const SizedBox(height: 8),
-                Text(widget.hotel.location, style: text.copyWith(color: Colors.grey[700])),
-                const SizedBox(height: 4),
-                Text(widget.hotel.bedrooms, style: text.copyWith(color: Colors.grey[700])),
-                const SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(widget.hotel.price, style: body.copyWith(color: Colors.teal)),
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isLiked = !isLiked; // toggle state
-                            });
-                          },
-                          child: Icon(
-                            isLiked ? Icons.favorite : Icons.favorite_border,
-                            color: isLiked ? Colors.red : Colors.black,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: primary,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            widget.hotel.rating,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(widget.hotel.title, style: body.copyWith(color: Colors.black)),
+                  const SizedBox(height: 8),
+                  Text(widget.hotel.location, style: text.copyWith(color: Colors.grey[700])),
+                  const SizedBox(height: 4),
+                  Text(widget.hotel.bedrooms, style: text.copyWith(color: Colors.grey[700])),
+                  const SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(widget.hotel.price, style: body.copyWith(color: Colors.teal)),
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isLiked = !isLiked; // toggle state
+                              });
+                            },
+                            child: Icon(
+                              isLiked ? Icons.favorite : Icons.favorite_border,
+                              color: isLiked ? Colors.red : Colors.black,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )
-              ],
-            ),
-          )
-        ],
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: primary,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              widget.hotel.rating,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
