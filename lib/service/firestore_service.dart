@@ -28,8 +28,8 @@ class FirestoreService {
   Future<List<VehicleModel>> fetchVehicles(String collectionName) async {
     final snapshot = await _firestore.collection(collectionName).get();
     return snapshot.docs
-        .map((doc) => VehicleModel.fromMap(doc.data()))
-        .toList();
+    .map((doc) => VehicleModel.fromMap(doc.data()))
+    .toList();
   }
 }
 

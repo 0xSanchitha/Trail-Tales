@@ -36,6 +36,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             }, icon: Icon(Iconsax.notification, color: Colors.white,)),
           ),
         ),
+        if (title != "P R O F I L E") 
         Padding(
           padding: const EdgeInsets.only(right: 20, bottom: 5),
           child: Container(
@@ -48,6 +49,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             }, icon: Icon(Iconsax.user, color: Colors.white,)),
           ),
         ),
+
       ],
       
     );

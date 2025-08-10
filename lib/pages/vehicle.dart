@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:trail_tales/appbar.dart';
 import 'package:trail_tales/constants.dart';
 import 'package:trail_tales/models/vehicle_model.dart';
+import 'package:trail_tales/pages/rental.dart';
 import 'package:trail_tales/searchbar.dart';
 import 'package:trail_tales/service/firestore_service.dart';
 
@@ -139,96 +140,123 @@ class _VehicleCardState extends State<VehicleCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 24),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 8)],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            child: widget.vehicle.imageUrl.isNotEmpty
-                ? CachedNetworkImage(
-                    imageUrl: widget.vehicle.imageUrl,
-                    height: 180,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(
+    return GestureDetector(
+      onTap: () {
+        final List<String> imagesList = [
+          if (widget.vehicle.image.isNotEmpty) widget.vehicle.image,
+          if (widget.vehicle.image2 != null && widget.vehicle.image2!.isNotEmpty) widget.vehicle.image2!,
+          if (widget.vehicle.image3 != null && widget.vehicle.image3!.isNotEmpty) widget.vehicle.image3!,
+        ];
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Renting(
+              images: imagesList,
+              title: widget.vehicle.title,
+              location: widget.vehicle.location,
+              bedrooms: widget.vehicle.bedrooms,
+              price: widget.vehicle.price,
+              rating: widget.vehicle.rating,
+              reviews: widget.vehicle.reviews,
+              details: widget.vehicle.details,
+              info: widget.vehicle.info,
+              renter: widget.vehicle.renter,
+            ),
+          ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 24),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 8)],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              child: widget.vehicle.image.isNotEmpty
+                  ? CachedNetworkImage(
+                      imageUrl: widget.vehicle.image,
                       height: 180,
-                      color: Colors.grey[300],
-                      child: const Center(
-                        child: CircularProgressIndicator(),
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Container(
+                        height: 180,
+                        color: Colors.grey[300],
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
                       ),
-                    ),
-                    errorWidget: (context, url, error) => Image.asset(
+                      errorWidget: (context, url, error) => Image.asset(
+                        'assets/placeholder.png',
+                        height: 180,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : Image.asset(
                       'assets/placeholder.png',
                       height: 180,
                       width: double.infinity,
                       fit: BoxFit.cover,
                     ),
-                  )
-                : Image.asset(
-                    'assets/placeholder.png',
-                    height: 180,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(widget.vehicle.title, style: body.copyWith(color: Colors.black)),
-                const SizedBox(height: 8),
-                Text(widget.vehicle.location, style: text.copyWith(color: Colors.grey[700])),
-                const SizedBox(height: 4),
-                Text(widget.vehicle.renter, style: text.copyWith(color: Colors.grey[700])),
-                const SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(widget.vehicle.price, style: body.copyWith(color: Colors.teal)),
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isLiked = !isLiked; // toggle state
-                            });
-                          },
-                          child: Icon(
-                            isLiked ? Icons.favorite : Icons.favorite_border,
-                            color: isLiked ? Colors.red : Colors.black,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: primary,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            widget.vehicle.rating,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(widget.vehicle.title, style: body.copyWith(color: Colors.black)),
+                  const SizedBox(height: 8),
+                  Text(widget.vehicle.location, style: text.copyWith(color: Colors.grey[700])),
+                  const SizedBox(height: 4),
+                  Text(widget.vehicle.renter, style: text.copyWith(color: Colors.grey[700])),
+                  const SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(widget.vehicle.price, style: body.copyWith(color: Colors.teal)),
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isLiked = !isLiked; // toggle state
+                              });
+                            },
+                            child: Icon(
+                              isLiked ? Icons.favorite : Icons.favorite_border,
+                              color: isLiked ? Colors.red : Colors.black,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )
-              ],
-            ),
-          )
-        ],
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: primary,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              widget.vehicle.rating,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

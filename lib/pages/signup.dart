@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:trail_tales/constants.dart';
@@ -32,6 +33,22 @@ registration() async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+
+      // Update the Firebase user profile displayName
+      await userCredential.user?.updateDisplayName(name);
+      await userCredential.user?.reload();
+      
+      final user = FirebaseAuth.instance.currentUser;
+
+      await FirebaseFirestore.instance
+          .collection("User")
+          .doc(user?.uid)
+          .set({
+        "uid": user?.uid,
+        "name": name,
+        "email": email,
+        "createdAt": FieldValue.serverTimestamp(),
+      });
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

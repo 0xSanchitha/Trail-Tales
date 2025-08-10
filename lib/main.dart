@@ -14,6 +14,8 @@ void main() async {
     DeviceOrientation.portraitUp,
   ]);
 
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
   // Initialize Firebase before running the app
   await Firebase.initializeApp();
 
