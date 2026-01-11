@@ -8,15 +8,18 @@
 
 ## 📱 UI Preview
 
-![Screen 1](assets/1.jpg)
-![Screen 2](assets/2.jpg)
-![Screen 3](assets/3.jpg)
-![Screen 4](assets/4.jpg)
-![Screen 5](assets/5.jpg)
-![Screen 6](assets/6.jpg)
-![Screen 7](assets/Trail Tales.jpg)
+<p align="center">
+  <img src="assets/1.jpg" width="250"/>
+  <img src="assets/2.jpg" width="250"/>
+  <img src="assets/3.jpg" width="250"/>
+</p>
 
-
+<p align="center">
+  <img src="assets/4.jpg" width="250"/>
+  <img src="assets/5.jpg" width="250"/>
+  <img src="assets/6.jpg" width="250"/>
+  <img src="assets/Trail Tales.jpg" width="250"/>
+</p>
 
 ---
 
