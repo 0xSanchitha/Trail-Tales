@@ -8,7 +8,7 @@
 
 ## 📱 UI Preview
 
-![Trail Tales UI](assets/trail-tales-ui.png)
+![Trail Tales UI](trail-tales-ui.png)
 
 ---
 
