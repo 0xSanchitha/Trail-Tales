@@ -8,7 +8,21 @@
 
 ## 📱 UI Preview
 
-![Trail Tales UI](trail-tales-ui.png)
+## 📱 UI Preview
+
+<p align="center">
+  <img src="assets/1.jpg" width="250"/>
+  <img src="assets/2.jpg" width="250"/>
+  <img src="assets/3.jpg" width="250"/>
+</p>
+
+<p align="center">
+  <img src="assets/4.jpg" width="250"/>
+  <img src="assets/5.jpg" width="250"/>
+  <img src="assets/6.jpg" width="250"/>
+  <img src="assets/7.jpg" width="250"/>
+</p>
+
 
 ---
 
