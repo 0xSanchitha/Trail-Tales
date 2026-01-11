@@ -1,16 +1,67 @@
-# trail_tales
+# 🌍 Trail Tales – Travel Guide Mobile App (UI Prototype)
 
-A new Flutter project.
+**Trail Tales** is a Flutter-based mobile application prototype designed to simplify travel planning by combining destinations, accommodation, and vehicle rentals into one platform.
 
-## Getting Started
+> This project focuses mainly on **UI/UX design** with **partial backend integration using Firebase**.
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+## 📱 UI Preview
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+![Trail Tales UI](assets/trail-tales-ui.png)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+## 🚀 Implemented Features
+
+- 🔐 User Login & Signup (Firebase Authentication)
+- 🔑 Google Authentication
+- 🎨 Fully designed Flutter UI
+- 🧭 App navigation & screen flow
+- 🔎 Search and category-based UI layouts
+
+---
+
+## 🚧 Features in Progress / UI Only
+
+- 🏨 Hotel booking system
+- 🚗 Vehicle rental system
+- ❤️ Favorites & booking history
+- 📍 Personalized recommendations
+- 🔄 Full Firestore CRUD integration
+
+---
+
+## 🧠 Project Objective
+
+Many travelers rely on multiple apps for:
+- Places to visit
+- Accommodation
+- Transport
+
+**Trail Tales** aims to unify these features into a **single mobile app**, starting with a strong UI foundation and scalable architecture.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** Flutter (Dart)
+- **Backend:** Firebase Authentication (partial)
+- **Database:** Cloud Firestore (planned)
+- **UI Design:** Figma
+- **Tools:** Android Studio, VS Code
+
+---
+
+## 🧪 Project Status
+
+🟡 **Current Stage:**  
+UI Complete + Authentication Implemented  
+
+🟢 **Future Scope:**  
+Full backend integration, real-time data, AI-based recommendations, multi-language support.
+
+
+
+⭐ This project demonstrates UI/UX skills, app architecture planning, and Firebase authentication.
+
